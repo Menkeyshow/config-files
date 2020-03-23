@@ -1,0 +1,33 @@
+#!/bin/bash
+
+exit_msg="is not installed. Exiting...\n"
+
+# check dependencies - exit with error message if dependency is not met
+type zsh > /dev/null 2>&1 || { echo "zsh $exit_msg"; exit 1; }
+type git > /dev/null 2>&1 || { echo "git $exit_msg"; exit 1; }
+
+
+# create directories
+mkdir ~/.zsh
+
+# switch to .zsh directory
+cd ~/.zsh
+
+# download git repositories
+git clone https://github.com/Menkeyshow/ohmyzsh oh-my-zsh
+git clone https://github.com/Menkeyshow/zsh-syntax-highlighting zsh-syntax-highlighting
+git clone https://github.com/Menkeyshow/zsh-autosuggestions zsh-autosuggestions
+
+# populate .zshrc-file
+cp ~/.zsh/oh-my-zsh/templates/zshrc-dreign ~/.zshrc
+
+# init submodules
+cd ~/.zsh/oh-my-zsh
+git submodule init
+git submodule update --recursive
+
+echo -e "\033[31mchanging default shell now.\033[0m"
+chsh -s /bin/zsh
+
+# start shell 
+zsh
